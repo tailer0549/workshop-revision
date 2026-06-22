@@ -17,6 +17,7 @@ public class User implements Serializable {
     private String name;
     private String email;
     private String password;
+    private String phone;
 
 
     // Associação muitos para 1 com a classe order e user
@@ -26,11 +27,20 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Long id, String name, String email,String password) {
+    public User(Long id, String name, String email,String password, String phone) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.phone = phone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getPassword() {
