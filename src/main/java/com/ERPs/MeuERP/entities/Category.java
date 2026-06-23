@@ -1,5 +1,6 @@
 package com.ERPs.MeuERP.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -14,8 +15,9 @@ public class Category implements Serializable {
     private Long id;
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
-    private Set<Product> products = new HashSet<>();
+    private Set<Product> products = new HashSet<>(); // Porque SET ? Porque product não pode ter duas categorias iguais
 
     public Category() {
     }
@@ -23,6 +25,10 @@ public class Category implements Serializable {
     public Category(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
     }
 
     public Long getId() {

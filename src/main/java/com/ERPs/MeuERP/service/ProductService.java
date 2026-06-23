@@ -36,7 +36,6 @@ public class ProductService {
     }
 
     private void updateData(Product entity, Product obj) {
-        entity.setCategory(obj.getCategory());
         entity.setName(obj.getName());
         entity.setPrice(obj.getPrice());
     }
