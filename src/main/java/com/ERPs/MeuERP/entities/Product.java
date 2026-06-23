@@ -28,6 +28,9 @@ public class Product implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     Set<Category> categories = new HashSet<>(); // Pq usar a coleção SET ? Porque categories não pode ter dois produtos iguais, o set ignora elementos repetidos
 
+    @OneToMany(mappedBy = "id.product") //
+    private Set<OrderItem> items = new HashSet<>(); // Pq Set ? Pq eu não quero produtos repetidos em um OrderItem
+
     public Product() {
     }
 
@@ -37,6 +40,17 @@ public class Product implements Serializable {
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
+    }
+
+    // Eu estou retornando um SetOrder pq é mais interessante retornar os Pedidos em que os produtos estão relacionados em vez dos PedidosItems
+    @JsonIgnore // Evita recursão infinita, Order chama OrderItem que chama Product que chama Order que chama orderItem que chama Product etc..
+    // Pq estou colocando o JsonIgnore aqui ? Pq na verdade eu quero acessar os Orders e ver os produtos vindo juntos e não o contrario
+    public Set<Order> getOrders() {
+       Set<Order> set = new HashSet<>();
+       for (OrderItem x : items) {
+           set.add(x.getOrder());
+       }
+       return set;
     }
 
     public String getImgUrl() {

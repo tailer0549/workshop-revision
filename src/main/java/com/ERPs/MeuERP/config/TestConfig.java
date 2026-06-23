@@ -1,14 +1,8 @@
 package com.ERPs.MeuERP.config;
 
-import com.ERPs.MeuERP.entities.Category;
-import com.ERPs.MeuERP.entities.Order;
-import com.ERPs.MeuERP.entities.Product;
-import com.ERPs.MeuERP.entities.User;
+import com.ERPs.MeuERP.entities.*;
 import com.ERPs.MeuERP.entities.enums.OrderStatus;
-import com.ERPs.MeuERP.repository.CategoryRepository;
-import com.ERPs.MeuERP.repository.OrderRepository;
-import com.ERPs.MeuERP.repository.ProductRepository;
-import com.ERPs.MeuERP.repository.UserRepository;
+import com.ERPs.MeuERP.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +29,9 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
 
     @Override
@@ -74,6 +71,13 @@ public class TestConfig implements CommandLineRunner {
         p5.getCategories().add(cat2);
         // Salvando os produtos novamente com as categorias associadas
         productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+
+        OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+        OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+        OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+
+        orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
 
 
 

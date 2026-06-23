@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order") // Nome da tabela no banco de dados
@@ -23,6 +25,9 @@ public class Order implements Serializable {
     @ManyToOne
     @JoinTable(name = "client_id")
     private User client;
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>(); // A coleção Set ignora elementos repetidos
 
     public Order() {
     }
@@ -42,6 +47,10 @@ public class Order implements Serializable {
         if (orderStatus != null) {
         this.orderStatus = orderStatus.getCode(); // .getCode() -> Retorna o valor numérico do tipo enumerado
         }
+    }
+
+    public Set<OrderItem> getItems() {
+        return items;
     }
 
     public User getClient() {

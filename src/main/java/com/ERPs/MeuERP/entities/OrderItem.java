@@ -1,6 +1,7 @@
 package com.ERPs.MeuERP.entities;
 
 import com.ERPs.MeuERP.entities.pk.OrderItemPk;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -27,6 +28,7 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    @JsonIgnore // Evita recursão infinita, Order chama OrderItem que chama Order que Chama OrderItem etc....
     public Order getOrder() {
         return id.getOrder();
     }

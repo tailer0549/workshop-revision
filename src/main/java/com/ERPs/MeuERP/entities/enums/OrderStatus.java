@@ -26,6 +26,6 @@ public enum OrderStatus {
                 return value;
             }
         }
-        throw new IllegalArgumentException("Invador OrderStatus code");
+        throw new IllegalArgumentException("Invalid OrderStatus code");
     }
 }
