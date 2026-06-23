@@ -1,27 +1,54 @@
 package com.ERPs.MeuERP.entities;
 
-import java.io.Serializable;
-import java.time.Instant;
+import com.ERPs.MeuERP.entities.pk.OrderItemPk;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
+import java.io.Serializable;
+import java.util.Objects;
+
+@Entity
+@Table(name = "tb_order_item")
 public class OrderItem implements Serializable {
 
-    private Instant moment;
+    @EmbeddedId
+    private OrderItemPk id = new OrderItemPk(); // Identificador do itemPedido
     private Double price;
+    private Integer quantity;
 
     public OrderItem() {
     }
 
-    public OrderItem(Instant moment, Double price) {
-        this.moment = moment;
+    public OrderItem(Order order, Product product, Integer quantity, Double price) {
+        id.setOrder(order);
+        id.setProduct(product);
+        this.quantity = quantity;
         this.price = price;
     }
 
-    public Instant getMoment() {
-        return moment;
+    public Order getOrder() {
+        return id.getOrder();
     }
 
-    public void setMoment(Instant moment) {
-        this.moment = moment;
+    public void setOrder(Order order) {
+        id.setOrder(order);
+    }
+
+    public Product getProduct() {
+        return id.getProduct();
+    }
+
+    public void setProduct(Product product) {
+        id.setProduct(product);
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public Double getPrice() {
@@ -32,5 +59,15 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItem orderItem = (OrderItem) o;
+        return Objects.equals(id, orderItem.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
