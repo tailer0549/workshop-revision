@@ -1,5 +1,6 @@
 package com.ERPs.MeuERP.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class User implements Serializable {
 
 
     // Associação muitos para 1 com a classe order e user
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     List<Order> orders = new ArrayList<>();
 
@@ -33,6 +35,10 @@ public class User implements Serializable {
         this.email = email;
         this.password = password;
         this.phone = phone;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 
     public String getPhone() {

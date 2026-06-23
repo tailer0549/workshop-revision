@@ -1,6 +1,7 @@
 package com.ERPs.MeuERP.entities;
 
 import com.ERPs.MeuERP.entities.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -14,6 +15,8 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
     private Integer orderStatus;
 
@@ -24,10 +27,29 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Long id, Instant moment, OrderStatus orderStatus) {
+    public Order(Long id, Instant moment, User user, OrderStatus orderStatus) {
         this.id = id;
         this.moment = moment;
-        setOrderStatus(orderStatus);
+        this.client = user;
+        setOrderStatus(orderStatus); // PQ setOrderStatus ? Porque precisamos transformar esse OrderStatus em um valor Integer, por isso usamos o setOrderStatus
+    }
+
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(orderStatus); // O valueOf converte o tipo enumerado em valor numérico
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        if (orderStatus != null) {
+        this.orderStatus = orderStatus.getCode(); // .getCode() -> Retorna o valor numérico do tipo enumerado
+        }
+    }
+
+    public User getClient() {
+        return client;
+    }
+
+    public void setClient(User client) {
+        this.client = client;
     }
 
     public Long getId() {
@@ -44,16 +66,6 @@ public class Order implements Serializable {
 
     public void setMoment(Instant moment) {
         this.moment = moment;
-    }
-
-    public OrderStatus getOrderStatus() {
-        return OrderStatus.valueOf(orderStatus);
-    }
-
-    // Esse metodo pega o orderstatus e tranforma em um código do tipo enumerado, por isso usamos ele lá no construtor.
-    public void setOrderStatus(OrderStatus orderStatus) {
-        if (orderStatus != null) {
-        this.orderStatus = orderStatus.getCode(); }
     }
 
     @Override
