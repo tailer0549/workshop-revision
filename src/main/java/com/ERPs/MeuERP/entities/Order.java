@@ -23,11 +23,15 @@ public class Order implements Serializable {
     private Integer orderStatus;
 
     @ManyToOne
-    @JoinTable(name = "client_id")
+    @JoinColumn(name = "client_id")
     private User client;
 
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>(); // A coleção Set ignora elementos repetidos
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL) // cascade = Propagação de operação, se deleta pedido, deleta pagamento
+    @JoinColumn(name = "payment_id") // Chave estrangeira da tabela payment
+    private Payment payment;
 
     public Order() {
     }
@@ -37,6 +41,14 @@ public class Order implements Serializable {
         this.moment = moment;
         this.client = user;
         setOrderStatus(orderStatus); // PQ setOrderStatus ? Porque precisamos transformar esse OrderStatus em um valor Integer, por isso usamos o setOrderStatus
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public OrderStatus getOrderStatus() {

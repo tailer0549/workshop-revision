@@ -79,6 +79,13 @@ public class TestConfig implements CommandLineRunner {
 
         orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
 
+        // Associando um pagamento a um pedido
+        Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+        // Fazendo a associação do pagamento 1 ao pedido 1
+        o1.setPayment(pay1);
+        // Agora precisamos salvar o pedido novamente para salvar o pagamento
+        orderRepository.save(o1);
+
 
 
     }
