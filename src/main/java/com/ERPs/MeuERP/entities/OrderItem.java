@@ -28,6 +28,11 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    // Metodo subtotal
+    public Double getSubTotal() {
+      return  price * quantity;
+    }
+
     @JsonIgnore // Evita recursão infinita, Order chama OrderItem que chama Order que Chama OrderItem etc....
     public Order getOrder() {
         return id.getOrder();

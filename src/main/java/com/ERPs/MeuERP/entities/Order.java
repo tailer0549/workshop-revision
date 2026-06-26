@@ -2,6 +2,7 @@ package com.ERPs.MeuERP.entities;
 
 import com.ERPs.MeuERP.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -41,6 +42,15 @@ public class Order implements Serializable {
         this.moment = moment;
         this.client = user;
         setOrderStatus(orderStatus); // PQ setOrderStatus ? Porque precisamos transformar esse OrderStatus em um valor Integer, por isso usamos o setOrderStatus
+    }
+
+    // Metodo total
+    public Double getTotal() {
+        double sum = 0;
+        for(OrderItem x : items) {
+            sum+= x.getSubTotal();
+        }
+        return sum;
     }
 
     public Payment getPayment() {

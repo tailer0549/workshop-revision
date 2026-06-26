@@ -1,6 +1,7 @@
 package com.ERPs.MeuERP.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -14,11 +15,11 @@ public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Instant moment; // Instant representa um momento
 
+    @JsonIgnore // Pagamento chama order que chama pagamento que chama order que chama pagamento etc.....
     @OneToOne
-    @MapsId
+    @MapsId // Significa que o Id do pedido é o mesmo id do pagamento
     private Order order;
 
     // Como estamos trabalhando com o Spring Framework, é necessário ter um construtor vazio
